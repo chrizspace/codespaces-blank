@@ -1,77 +1,101 @@
 <!DOCTYPE html>
 <html lang="pl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Witaj na stronie</title>
-    <script
-      async
-      src="https://www.googletagmanager.com/gtag/js?id=G-QJT78JQPZ2"
-    ></script>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Świąteczne powitanie</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=TWÓJ-ID-GA"></script>
     <script>
-      function setCookie(name, value, days) {
-        const d = new Date();
-        d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
-        const expires = "expires=" + d.toUTCString();
-        document.cookie = name + "=" + value + ";" + expires + ";path=/";
-      }
-
-      function getCookie(name) {
-        const decodedCookies = decodeURIComponent(document.cookie);
-        const cookies = decodedCookies.split(";");
-        const cookieName = name + "=";
-
-        for (let i = 0; i < cookies.length; i++) {
-          let cookie = cookies[i];
-          while (cookie.charAt(0) === " ") {
-            cookie = cookie.substring(1);
-          }
-          if (cookie.indexOf(cookieName) === 0) {
-            return cookie.substring(cookieName.length, cookie.length);
-          }
+        // Konfiguracja motywu Tailwind
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        holiday: {
+                            green: '#0F5132',
+                            gold: '#FFD700',
+                            red: '#B91C1C'
+                        }
+                    }
+                }
+            }
         }
-        return "";
-      }
 
-      // Inicjalizacja Google Analytics
-      window.dataLayer = window.dataLayer || [];
-      function gtag() {
-        dataLayer.push(arguments);
-      }
-      gtag("js", new Date());
-      gtag("config", "G-QJT78JQPZ2");
-
-      window.onload = function () {
-        const userName = getCookie("userName");
-        if (!userName) {
-          const name = prompt(
-            "Przedstaw się i zobacz co dla Ciebie przygotowaliśmy!"
-          );
-          if (name) {
-            setCookie("userName", name, 365); // Cookie ważne przez rok
-
-            // Wysłanie zdarzenia do Google Analytics
-            gtag("event", "user_identification", {
-              event_category: "engagement",
-              event_label: "new_user",
-              value: name,
-            });
-
-            document.getElementById("welcome").textContent = `Witaj ${name}!`;
-          }
-        } else {
-          document.getElementById(
-            "welcome"
-          ).textContent = `Witaj ponownie ${userName}!`;
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + d.toUTCString();
+            document.cookie = name + "=" + value + ";" + expires + ";path=/";
         }
-      };
+
+        function getCookie(name) {
+            const decodedCookies = decodeURIComponent(document.cookie);
+            const cookies = decodedCookies.split(';');
+            const cookieName = name + "=";
+            
+            for(let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i];
+                while (cookie.charAt(0) === ' ') {
+                    cookie = cookie.substring(1);
+                }
+                if (cookie.indexOf(cookieName) === 0) {
+                    return cookie.substring(cookieName.length, cookie.length);
+                }
+            }
+            return "";
+        }
+
+        // Inicjalizacja Google Analytics
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'TWÓJ-ID-GA');
+
+        window.onload = function() {
+            const userName = getCookie("userName");
+            if (!userName) {
+                const name = prompt("Podaj swoje imię:");
+                if (name) {
+                    setCookie("userName", name, 365);
+                    
+                    gtag('event', 'user_identification', {
+                        'event_category': 'engagement',
+                        'event_label': 'new_user',
+                        'value': name
+                    });
+                    
+                    document.getElementById('welcome').textContent = `Witaj ${name}!`;
+                }
+            } else {
+                document.getElementById('welcome').textContent = `Witaj ponownie ${userName}!`;
+            }
+        };
     </script>
-  </head>
-  <body>
-    <h1 id="welcome">Witaj!</h1>
-    <p>
-      To jest przykładowa strona z zapisem imienia w cookies i integracją Google
-      Analytics.
-    </p>
-  </body>
+</head>
+<body class="bg-gradient-to-br from-holiday-green via-white to-holiday-red min-h-screen">
+    <div class="container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-screen">
+        <div class="bg-white bg-opacity-90 rounded-lg shadow-xl p-8 md:p-12 max-w-2xl w-full text-center">
+            <h1 id="welcome" class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-holiday-green">
+                Witaj!
+            </h1>
+            
+            <p class="text-lg md:text-xl mb-6 text-gray-700">
+                To jest świąteczna strona z zapisem imienia w cookies i integracją Google Analytics.
+            </p>
+
+            <div class="space-y-4">
+                <div class="flex items-center justify-center space-x-2">
+                    <span class="w-3 h-3 rounded-full bg-holiday-red"></span>
+                    <span class="w-3 h-3 rounded-full bg-holiday-gold"></span>
+                    <span class="w-3 h-3 rounded-full bg-holiday-green"></span>
+                </div>
+            </div>
+
+            <div class="mt-8 text-sm text-gray-500">
+                <p>🎄 Wesołych Świąt! 🎄</p>
+            </div>
+        </div>
+    </div>
+</body>
 </html>
