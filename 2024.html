@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Witaj na stronie</title>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-QJT78JQPZ2"
+    ></script>
+    <script>
+      function setCookie(name, value, days) {
+        const d = new Date();
+        d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
+        const expires = "expires=" + d.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/";
+      }
+
+      function getCookie(name) {
+        const decodedCookies = decodeURIComponent(document.cookie);
+        const cookies = decodedCookies.split(";");
+        const cookieName = name + "=";
+
+        for (let i = 0; i < cookies.length; i++) {
+          let cookie = cookies[i];
+          while (cookie.charAt(0) === " ") {
+            cookie = cookie.substring(1);
+          }
+          if (cookie.indexOf(cookieName) === 0) {
+            return cookie.substring(cookieName.length, cookie.length);
+          }
+        }
+        return "";
+      }
+
+      // Inicjalizacja Google Analytics
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-QJT78JQPZ2");
+
+      window.onload = function () {
+        const userName = getCookie("userName");
+        if (!userName) {
+          const name = prompt(
+            "Przedstaw się i zobacz co dla Ciebie przygotowaliśmy!"
+          );
+          if (name) {
+            setCookie("userName", name, 365); // Cookie ważne przez rok
+
+            // Wysłanie zdarzenia do Google Analytics
+            gtag("event", "user_identification", {
+              event_category: "engagement",
+              event_label: "new_user",
+              value: name,
+            });
+
+            document.getElementById("welcome").textContent = `Witaj ${name}!`;
+          }
+        } else {
+          document.getElementById(
+            "welcome"
+          ).textContent = `Witaj ponownie ${userName}!`;
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <h1 id="welcome">Witaj!</h1>
+    <p>
+      To jest przykładowa strona z zapisem imienia w cookies i integracją Google
+      Analytics.
+    </p>
+  </body>
+</html>
