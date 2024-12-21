@@ -1,101 +1,141 @@
 <!DOCTYPE html>
 <html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Świąteczne powitanie</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=GTM-N82WXCTN"></script>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=GTM-N82WXCTN"
+    ></script>
     <script>
-        // Konfiguracja motywu Tailwind
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        holiday: {
-                            green: '#0F5132',
-                            gold: '#FFD700',
-                            red: '#B91C1C'
-                        }
-                    }
-                }
-            }
+      // Konfiguracja motywu Tailwind
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              holiday: {
+                green: "#14564B",
+                gold: "#E4A574",
+                red: "#F0563D",
+              },
+            },
+          },
+        },
+      };
+
+      function setCookie(name, value, days) {
+        const d = new Date();
+        d.setTime(d.getTime() + days * 24 * 60 * 60 * 1000);
+        const expires = "expires=" + d.toUTCString();
+        document.cookie = name + "=" + value + ";" + expires + ";path=/";
+      }
+
+      function getCookie(name) {
+        const decodedCookies = decodeURIComponent(document.cookie);
+        const cookies = decodedCookies.split(";");
+        const cookieName = name + "=";
+
+        for (let i = 0; i < cookies.length; i++) {
+          let cookie = cookies[i];
+          while (cookie.charAt(0) === " ") {
+            cookie = cookie.substring(1);
+          }
+          if (cookie.indexOf(cookieName) === 0) {
+            return cookie.substring(cookieName.length, cookie.length);
+          }
         }
+        return "";
+      }
 
-        function setCookie(name, value, days) {
-            const d = new Date();
-            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
-            const expires = "expires=" + d.toUTCString();
-            document.cookie = name + "=" + value + ";" + expires + ";path=/";
+      // Inicjalizacja Google Analytics
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "GTM-N82WXCTN");
+
+      window.onload = function () {
+        const userName = getCookie("userName");
+        if (!userName) {
+          const name = prompt("Podaj swoje imię:");
+          if (name) {
+            setCookie("userName", name, 365);
+
+            gtag("event", "user_identification", {
+              event_category: "engagement",
+              event_label: "new_user",
+              value: name,
+            });
+
+            document.getElementById("welcome").textContent = `Witaj ${name}🎁`;
+          }
+        } else {
+          document.getElementById(
+            "welcome"
+          ).textContent = `Witaj ${userName}🎅`;
         }
-
-        function getCookie(name) {
-            const decodedCookies = decodeURIComponent(document.cookie);
-            const cookies = decodedCookies.split(';');
-            const cookieName = name + "=";
-            
-            for(let i = 0; i < cookies.length; i++) {
-                let cookie = cookies[i];
-                while (cookie.charAt(0) === ' ') {
-                    cookie = cookie.substring(1);
-                }
-                if (cookie.indexOf(cookieName) === 0) {
-                    return cookie.substring(cookieName.length, cookie.length);
-                }
-            }
-            return "";
-        }
-
-        // Inicjalizacja Google Analytics
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', 'GTM-N82WXCTN');
-
-        window.onload = function() {
-            const userName = getCookie("userName");
-            if (!userName) {
-                const name = prompt("Podaj swoje imię:");
-                if (name) {
-                    setCookie("userName", name, 365);
-                    
-                    gtag('event', 'user_identification', {
-                        'event_category': 'engagement',
-                        'event_label': 'new_user',
-                        'value': name
-                    });
-                    
-                    document.getElementById('welcome').textContent = `Witaj ${name}!`;
-                }
-            } else {
-                document.getElementById('welcome').textContent = `Witaj ponownie ${userName}!`;
-            }
-        };
+      };
     </script>
-</head>
-<body class="bg-gradient-to-br from-holiday-green via-white to-holiday-red min-h-screen">
-    <div class="container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-screen">
-        <div class="bg-white bg-opacity-90 rounded-lg shadow-xl p-8 md:p-12 max-w-2xl w-full text-center">
-            <h1 id="welcome" class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-holiday-green">
-                Witaj!
-            </h1>
-            
-            <p class="text-lg md:text-xl mb-6 text-gray-700">
-                To jest świąteczna strona z zapisem imienia w cookies i integracją Google Analytics.
-            </p>
-
-            <div class="space-y-4">
-                <div class="flex items-center justify-center space-x-2">
-                    <span class="w-3 h-3 rounded-full bg-holiday-red"></span>
-                    <span class="w-3 h-3 rounded-full bg-holiday-gold"></span>
-                    <span class="w-3 h-3 rounded-full bg-holiday-green"></span>
-                </div>
-            </div>
-
-            <div class="mt-8 text-sm text-gray-500">
-                <p>🎄 Wesołych Świąt! 🎄</p>
-            </div>
+  </head>
+  <body
+    class="bg-gradient-to-br from-holiday-green via-holiday-green to-holiday-green min-h-screen"
+  >
+    <div
+      class="container mx-auto px-4 py-8 flex flex-col items-center justify-center min-h-screen"
+    >
+      <div
+        class="bg-white bg-opacity-90 rounded-lg shadow-xl p-8 md:p-12 max-w-2xl w-full text-center"
+      >
+        <h1
+          id="welcome"
+          class="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 text-holiday-green"
+        >
+          Witaj!
+        </h1>
+        <br />
+        <p class="text-lg md:text-xl mb-6 text-gray-700">
+          🎄✨ Wesołych Świąt! ✨🎄<br />
+          Niech te Święta będą pełne radości, ciepła i magicznych chwil
+          spędzonych z bliskimi. 🌟 <br /><br />
+          Życzę Ci dużo uśmiechu, pysznych potraw na stole i mnóstwa prezentów,
+          które wywołają radość w sercu! 🎁🎅
+          <br /><br />
+          A w Nowym Roku niech spełniają się wszystkie Twoje marzenia! 🥂🎉
+          Niech każdy dzień będzie pełen nowych wyzwań, sukcesów i szczęścia, a
+          zdrowie i dobre chwile nigdy Cię nie opuszczają. Wesołych Świąt i
+          Szczęśliwego Nowego Roku! 🎊❤️
+        </p>
+        <div class="mt-8 flex justify-center flex-wrap">
+          <img src="assets/konrad.jpg" alt="Ekipa" class="md:size-6/12 lg:size-3/12  border-4 border-holiday-green m-2 " />
+          <img src="assets/krzysiek.jpg" alt="Ekipa" class="md:size-6/12 lg:size-3/12  border-4 border-holiday-red m-2 " />
+          <img src="assets/ania.jpg" alt="Ekipa" class="md:size-6/12 lg:size-3/12  border-4 border-holiday-gold m-2" />
         </div>
+
+        <div class="space-y-4 mt-8">
+          <div class="flex items-center justify-center space-x-2">
+            <span class="w-3 h-3 rounded-full bg-holiday-red"></span>
+            <span class="w-3 h-3 rounded-full bg-holiday-gold"></span>
+            <span class="w-3 h-3 rounded-full bg-holiday-green"></span>
+          </div>
+        </div>
+
+        <div>
+          <p class="mt-8 text-lg text-gray-500">
+            🎄 <strong>Wesołych Świąt Życzą🎄</strong>
+          </p>
+          <br />
+          <p class="text-lg text-holiday-red flex justify-center font-bold">
+            Krzysiek, Ania i Konrad
+              <div class="mt-8 flex justify-center flex-wrap">
+                <img src="assets/ekipa.jpg" alt="Ekipa" class="md:size-6/12 lg:size-4/12 border-4 border-holiday-green m-2 " />
+                <img src="assets/paczki.jpg" alt="Ekipa" class="md:size-6/12 lg:size-4/12 border-4 border-holiday-red m-2" />
+              </div>
+          </p>
+        </div>
+      </div>
     </div>
-</body>
+  </body>
 </html>
